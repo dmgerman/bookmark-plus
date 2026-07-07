@@ -3,12 +3,12 @@
 ;; Filename: bookmark+-chg.el
 ;; Description: Change logs for Bookmark+ libraries.
 ;; Author: Drew Adams
-;; Maintainer: Drew Adams (concat "drew.adams" "@" "oracle" ".com")
-;; Copyright (C) 2000-2025, Drew Adams, all rights reserved.
+;; Maintainer: Drew Adams (concat "drew" "0000" "0001" "@gm" "ail" ".com")
+;; Copyright (C) 2000-2026, Drew Adams, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Last-Updated: Wed Aug 20 14:33:18 2025 (-0700)
-;;           By: dradams
-;;     Update #: 17080
+;; Last-Updated: Mon Jul  6 07:43:04 2026 (-0700)
+;;           By: drew0
+;;     Update #: 17171
 ;; URL: https://www.emacswiki.org/emacs/download/bookmark%2b-chg.el
 ;; Doc URL: https://www.emacswiki.org/emacs/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+
@@ -146,6 +146,24 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-1.el'")
 ;;
+;; 2026/07/04 drew0
+;;     bmkp-bookmark-description: Include bookmark type name in description.  Added sudo not logged in.
+;; 2026/07/01 drew0
+;;     bmkp-autofile-set, bmkp-autofile-add-tags, bmkp-autofile-remove-tags,
+;;      bmkp-completing-read-file-name, bmkp-file-target-set,
+;;      bmkp-find-file-invoke-bookmark-if-autofile, bmkp-isearch-next-bookmark-buffer,
+;;      bookmark-make-record-default, bmkp-specific-files-alist-only, bmkp-this-file-bmenu-list,
+;;      bmkp-this-file-p:
+;;        Use bookmark-buffer-file-name, not buffer-file-name, so get abbreviated (~/) filenames.
+;;     bmkp-autofile-set, bmkp-autofile-add-tags, bmkp-autofile-remove-tags, bmkp-file-target-set:
+;;        Use abbreviate-file-name.
+;;     bmkp-isearch-next-bookmark-buffer: Use bmkp-same-file-p, not equal.
+;;     Added missing vacuous defvars.
+;; 2026/06/28 drew0
+;;     Removed bmkp-bookmark-last-access-cp.  Replaced it with alias to bmkp-visited-more-recently-cp.
+;;     bmkp-send-bug-report: Updated address.
+;;     bmkp-bookmark-description: Check (featurep 'icicles).
+;;     bmkp-region-jump-narrow-indirect-other-window: simple fboundp check, not icicle-mode check.
 ;; 2025/08/20 dadams
 ;;     Include bookmark attribute last-modified, from Emacs 29+.
 ;;     Renamed bookmark attribute time to last-visited.
@@ -156,6 +174,7 @@
 ;;     bmkp-get-visit-time: Support both last-visited (new name) and time (old name).
 ;;     Added: bmkp-visited-more-recently-cp.
 ;;     Renamed bmkp-visited-more-cp to bmkp-visited-more-often-cp.
+;;     bmkp-retrieve-icicle-search-hits-1: Error if not icicle-searching-p.
 ;; 2025/07/29 dadams
 ;;     Added bmkp-bookmark-all-dired-buffers.
 ;; 2025/07/27 dadams
@@ -1610,6 +1629,25 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-bmu.el'")
 ;;
+;; 2026/07/04 drew0
+;;     Added faces bmkp-icicles-search-hits and bmkp-kmacro-list.
+;;     bmkp-bmenu-mode-status-help:
+;;      Legend: Changed order.  Added bmkp-icicles-search-hits and bmkp-kmacro-list.  Better wording.
+;;     bmkp-bmenu-propertize-item:
+;;      Use faces bmkp-icicles-search-hits and bmkp-kmacro-list.  Better mouseover help text.
+;;     Redefined faces bmkp-function, bmkp-no-local, bmkp-remote-file, bmkp-sequence, bmkp-url.
+;;     Added another missing vacuous defvar.
+;; 2026/07/01 drew0
+;;     Added missing vacuous defvars.
+;; 2026/06/30 drew0
+;;     bookmark-bmenu-mode-map: Bind (, like M-t, to bookmark-bmenu-toggle-filenames (like Dired).
+;; 2026/06/28 drew0
+;;     Corrected bmkp-bmenu-sort-by-bookmark-visit-frequency: had forgotten rename of
+;;      bmkp-visited-more-cp to bmkp-visited-more-often-cp.
+;;     Replaced bmkp-bmenu-sort-by-last-bookmark-access by bmkp-bmenu-sort-by-bookmark-visit-recency.
+;;      Changed binding from s d to s r.  Replace in bookmark-bmenu-mode and bmkp-bmenu-sort-menu doc.
+;;     bmkp-bmenu-sort-by-bookmark-visit-frequency: bmkp-visited-more-cp -> bmkp-visited-more-often-cp.
+;;     Changed binding of bmkp-reverse-sort-order from s r to s R.
 ;; 2025/07/30 dadams
 ;;     bmkp-bmenu-edit-menu: Added bmkp-bmenu-edit-bookmark-name-and-location.
 ;; 2025/07/27 dadams
@@ -2360,6 +2398,12 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-doc.el'")
 ;;
+;; 2026/06/30 drew0
+;;     Filtering Bookmarks (Hiding and Showing): Say that in bmenu key ( does the same as key M-t.
+;; 2026/06/28 drew0
+;;     Sorting Bookmarks: bookmark access date/time -> bookmark visit frequency. Binding s d -> s v.
+;;                        Reverse sort binding changed from s r to s R.
+;;     Automatic Info Bookmarking: s d -> s r.
 ;; 2024/09/16 dadams
 ;;     Added doc about bmkp-define-type-from-hander.
 ;; 2020/07/04 dadams
@@ -2703,6 +2747,8 @@
 ;;       that depends on macros needs to be byte-compiled anew after loading the updated macros.
 ;; **************************************************************************************************
 ;;
+;; 2026/06/21 drew0
+;;     Added vacuous defvar for lexical-binding.
 ;; 2025/05/07 dadams
 ;;     Added macro with-buffer-modified-unmodified, from vanilla bookmark.el.
 ;; 2024/09/16 dadams
@@ -2766,6 +2812,16 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+.el'")
 ;;
+;; 2026/07/06 drew0
+;;     Version 2026.07.06
+;; 2026/07/04 drew0
+;;     Version 2026.07.04
+;; 2026/07/01 drew0
+;;     Version 2026.07.01
+;; 2026/06/30 drew0
+;;     Version 2026.06.30
+;; 2026/06/28 drew0
+;;     Version 2026.06.28
 ;; 2025/08/20 dadams
 ;;     Version 2025.08.20
 ;; 2025/07/30 dadams
