@@ -1,0 +1,12 @@
+* bookmark-plus
+
+
+This is a mirror of 
+
+bookmarkPlus enhances vanilla Emacs bookmarks in many ways. See
+https://www.emacswiki.org/emacs/BookmarkPlus for details
+
+
+- The canonical version lives in emacsWiki.
+- Latest sync: [2026-07-17 Fri] to Update #10036
+
