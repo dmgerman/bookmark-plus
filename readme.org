@@ -1,12 +1,30 @@
 * bookmark-plus
 
 
-bookmarkPlus enhances vanilla Emacs bookmarks in many ways. See https://www.emacswiki.org/emacs/BookmarkPlus for details
+bookmarkPlus enhances vanilla Emacs bookmarks in many ways. 
 
 This is a git mirror of the files in emacsWiki.
 
+The main Bookmark+ library is =bookmark+.el=.  The other required
+libraries are =bookmark+-mac.el=, =bookmark+-bmu.el=,
+=bookmark+-1.el=, and =bookmark+-key.el=.  If you want to be able
+to highlight bookmarks then you will also need library
+=bookmark+-lit.el=.  I recommend that you byte-compile all of the
+libraries, after loading the source files (in particular, load
+=bookmark+-mac.el=).
+
+Put the directory of these libraries in your =load-path= and add
+this to your init file (~/.emacs):
+
+#+begin_src emacs-lisp   :exports both
+(require bookmark+)
+#+end_src
+
+That will load all of the Bookmark+ libraries.  If you do not care
+about bookmark highlighting then simply do not put
+=bookmark+-lit.el= in your =load-path=.
 
 
-- The canonical version lives in emacsWiki.
-- Latest sync: [2026-07-17 Fri] to Update #10036
+See https://www.emacswiki.org/emacs/BookmarkPlus for its documentation.
+
 
