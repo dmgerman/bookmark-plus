@@ -1,10 +1,10 @@
 * bookmark-plus
 
 
-This is a mirror of 
+bookmarkPlus enhances vanilla Emacs bookmarks in many ways. See https://www.emacswiki.org/emacs/BookmarkPlus for details
 
-bookmarkPlus enhances vanilla Emacs bookmarks in many ways. See
-https://www.emacswiki.org/emacs/BookmarkPlus for details
+This is a git mirror of the files in emacsWiki.
+
 
 
 - The canonical version lives in emacsWiki.
