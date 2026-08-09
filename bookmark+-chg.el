@@ -6,9 +6,9 @@
 ;; Maintainer: Drew Adams (concat "drew" "0000" "0001" "@gm" "ail" ".com")
 ;; Copyright (C) 2000-2026, Drew Adams, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Last-Updated: Fri Jul 17 17:24:45 2026 (-0400)
+;; Last-Updated: Sat Aug  8 15:42:50 2026 (-0700)
 ;;           By: drew0
-;;     Update #: 17330
+;;     Update #: 17442
 ;; URL: https://www.emacswiki.org/emacs/download/bookmark%2b-chg.el
 ;; Doc URL: https://www.emacswiki.org/emacs/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+
@@ -146,6 +146,36 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-1.el'")
 ;;
+;; 2026/08/08 drew0
+;;     bookmark--jump-via:
+;;       After handler, invoke bmkp-jump-display-function, as vanilla does.  Handlers that don't want
+;;         to automatically use it must now set bmkp-jump-display-function to nil.
+;;       Rewrote doc string, to list the jump-processing steps and mention throwing to catch.
+;;     bmkp-jump-(bookmark-(file|list)|dired|eww|function|desktop|icicle-search-hits
+;;       |(kmacro|variable)-list|sequence|snippet|url-browse): Reset bmkp-jump-display-function to nil.
+;;     Handlers that invoke bookmark-default-handler: Mention this in their doc strings.
+;;     bookmark-jump doc string:
+;;       Say DISPLAY-FUNCTION is passed the buffer that's current after handler, and say how handler can
+;;       use bmkp-jump-display-function, including to prevent automatic display.
+;;     bmkp-modified-more-recently-cp: Typo: bmkp-get-last-modified -> bookmark-get-last-modified.
+;;     Corrected command names in autoload cookies for *-next|previous-*-bookmark*.
+;;     bmkp-bookmark-description: If no annotation, say that.
+;;     bmkp-jump-display-function doc string: Say handler can set it to nil to prevent display.
+;; 2026/07/23 drew0
+;;     Added: bmkp-modified-more-recently-cp.  Mention in bmkp-this-file/buffer-cycle-sort-comparer doc.
+;;     bookmark-alist doc string:
+;;       Mention that "visit" here just means jump - not necessarily about a destination.
+;;     bookmark-insert-annotation: Error if invalid bookmark.
+;;     bookmark-edit-annotation-mode-map: Updated to support Emacs 27+ as well as earlier.
+;;     Renamed my bookmark-send-edited-annotation to bookmark-edit-annotation-confirm.
+;;       Keep old name as alias, for Emacs < 29.
+;;     bookmark-make-record-default: Improved doc string wrt VISITS arg.
+;;     bookmark-alist-from-buffer: Error msg for buffer as well as file.
+;; 2026/07/20 drew0
+;; Added defconst bmkp-mailto-bug-report-text.
+;; bmkp-send-bug-report, bmkp-eww-auto-bookmark-mode, bmkp-automatic-bookmark-mode,
+;;  bmkp-info-auto-bookmark-mode, bmkp-temporary-bookmarking-mode:
+;;    Use bmkp-mailto-bug-report-text.
 ;; 2026/07/17 drew0
 ;;     bookmark-set: Keep bmkp-properties-to-keep only when overwriting.  Improved doc string.
 ;;     bmkp-bookmark-set-confirm-overwrite: Better arg names.
@@ -1657,6 +1687,33 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-bmu.el'")
 ;;
+;; 2026/08/07 drew0
+;;     Added bmkp-make-obsolete (it's also in bookmark+-1.el).
+;; 2026/08/06 drew0
+;;     bmkp-bmenu-mode-status-help: Use copy-sequence on strings for put-text-property.
+;;     Corrected newlines in doc doc strings passed to macro bmkp-define-show-only-command.
+;; 2026/07/23 drew0
+;;     Added: bmkp-bmenu-sort-by-modification-recency.  Bound to s m.
+;;     bookmark-bmenu-mode: Updated doc string to include bmkp-bmenu-sort-by-modification-recency.
+;;     bmkp-bmenu-sort-by-bookmark-visit-* doc strings: Say that "visits" doesn't imply a destination.
+;; 2026/07/21 drew0
+;;     Added: bmkp-bmenu-show-only-autonamed-this-buffer-bookmarks,
+;;            bmkp-bmenu-mark-((non-)annotated|non-autofile|(non-)autonamed|sequence|(un)tagged)
+;;              -bookmarks (bound to a M, a ~ M, A ~ M, # M, # ~ M, $ M, T M, T ~ M).
+;;            bmkp-bmenu-show-only((non-)annotated|non-autofile|autonamed-this-buffer|non-dir-file)
+;;              -bookmarks (bound to a S, a ~ S, # ~ S, unbound, unbound)
+;;     bookmark-bmenu-mode:
+;;       Under Mark/Unmark:
+;;         Just show type name, not verbose "Mark <type> bookmarks".
+;;         Added: (non-)annotated, non-autonamed, non-autofile, sequence, eww.
+;;       Under Hide/Show:
+;;         Added: non-(annotated|autonamed|autofile|this-buffer-lighted).  Reordered.
+;;     bmkp-bmenu-show-types-menu:
+;;       Added: (non-)(annotated|dir-file).
+;;       Moved here from *-show-menu: (this-buffer-)lighted, temporary, autonamed, autofile.
+;;     bmkp-bmenu-mark-types-menu:
+;;       Added bmkp-bmenu-mark-(un)tagged-bookmarks, non-(autonamed|autofile|annotated|sequence).
+;;       Moved here from *mark-menu: lighted, temporary, autonamed, autofile.
 ;; 2026/07/15 drew0
 ;;     Added show-only commands:
 ;;       annotated, buffer, local-file, local-non-dir, non-annotated, non-autofile, non-autonamed,
@@ -2464,6 +2521,8 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-doc.el'")
 ;;
+;; 2026/08/08 drew0
+;;     Updated for recent changes, in particular the new definition of bookmark--jump-via.
 ;; 2026/06/30 drew0
 ;;     Filtering Bookmarks (Hiding and Showing): Say that in bmenu key ( does the same as key M-t.
 ;; 2026/06/28 drew0
@@ -2829,6 +2888,14 @@
 ;;       that depends on macros needs to be byte-compiled anew after loading the updated macros.
 ;; **************************************************************************************************
 ;;
+;; 2026/08/02 drew0
+;;     bmkp-define(-next+prev)-cycle-command(s): Let-bind make-symbol var TMP-* for local var STARTOVR.
+;;     bmkp-define-show-only-command: Let-bind make-symbol vars TMP-* for local vars ORIG-*.
+;;     bmkp-define-sort-command: Let-bind make-symbol var TMP-* for local var CURRENT-BMK.
+;;     bmkp-define-file-sort-predicate: Let-bind make-symbol vars TMP-* for local vars A1 and A2.
+;;     bmkp-with-bookmark-dir: Let-bind make-symbol var TMP-* for local var LOC.
+;; 2026/07/23 drew0
+;;     bmkp-define-sort-command: Typo.
 ;; 2026/07/15 drew0
 ;;     bmkp-define-show-only-command:
 ;;       Append to command's doc string: if use outside *Bookmark List* then jump there first.
@@ -2904,6 +2971,18 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+.el'")
 ;;
+;; 2026/08/08 drew0
+;;     Version 2026.08.08
+;; 2026/08/02 drew0
+;;     Version 2026.08.02
+;; 2026/07/23 drew0
+;;     Version 2026.07.23
+;;     bookmark-bmenu-buffer is now a defvar, not defconst, per Emacs 28+.
+;; 2026/07/21 drew0
+;;     Version 2026.07.21
+;; 2026/07/20 drew0
+;;     Version 2026.07.20
+;;     Added bmkp-mailto-bug-report-text (also in bookmark+-1.el) - use it instead of hard-coded text.
 ;; 2026/07/17 drew0
 ;;     Version 2026.07.17
 ;; 2026/07/06 drew0

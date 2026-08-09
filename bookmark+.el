@@ -7,10 +7,10 @@
 ;; Copyright (C) 2000-2026, Drew Adams, all rights reserved.
 ;; Copyright (C) 2009, Thierry Volpiatto, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Version: 2026.07.17
-;; Last-Updated: Fri Jul 17 16:10:44 2026 (-0400)
+;; Version: 2026.08.08
+;; Last-Updated: Sat Aug  8 12:27:50 2026 (-0700)
 ;;           By: drew0
-;;     Update #: 15103
+;;     Update #: 15129
 ;; URL: https://www.emacswiki.org/emacs/download/bookmark%2b.el
 ;; Doc URL: https://www.emacswiki.org/emacs/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+, projects, placeholders, annotations, search, info, url, eww, w3m, gnus
@@ -147,8 +147,13 @@
 ;;
 ;;    `bmkp-version'.
 ;;
+;;  User options defined here:
+;;
+;;    `bmkp-bmenu-buffer'.
+;;
 ;;  Internal variables defined here:
 ;;
+;;    `bookmark-bmenu-buffer', `bmkp-mailto-bug-report-text',
 ;;    `bmkp-version-number'.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -176,8 +181,10 @@
 
 (require 'bookmark)                     ; Vanilla Emacs.
 
+
+
 ;;;###autoload (autoload 'bmkp-version-number "bookmark+")
-(defconst bmkp-version-number "2026.07.17")
+(defconst bmkp-version-number "2026.08.08")
 
 ;;;###autoload (autoload 'bmkp-version "bookmark+")
 (defun bmkp-version ()
@@ -190,23 +197,31 @@
   "Name of bookmark under edit in `bookmark-edit-annotation-mode'.")
 (make-variable-buffer-local 'bookmark-annotation-name)
 
-;;;###autoload (autoload 'bookmark-bmenu-buffer "bookmark+")
-;; This was added for vanilla Emacs 28.  Add it here for older releases.
-(defconst bookmark-bmenu-buffer "*Bookmark List*"
-  "Name of buffer used by vanilla Emacs for the bookmark-list display.")
+;; This is also in `bookmark+-1.el'.
+;;
+;;;###autoload (autoload 'bmkp-mailto-bug-report-text "bookmark+")
+(defconst bmkp-mailto-bug-report-text
+  (format (concat "mailto:" "drew" "0000" "0001" "@gm" "ail" ".com?subject=\
+Bookmark+ bug: \
+&body=Describe bug below, using a precise recipe that starts with `emacs -Q' or `emacs -q'.  \
+Be sure to mention the `Update #' from header of the particular Bookmark+ file header.\
+%%0A%%0AEmacs version: %s")
+          (emacs-version))
+  "Boilerplate text in Bookmark+ bug report emails.")
 
 ;;;###autoload (autoload 'bookmark-plus "bookmark+")
 (defgroup bookmark-plus nil
   "Bookmark enhancements."
   :prefix "bmkp-" :group 'bookmark
-  :link `(url-link :tag "Send Bug Report"
-          ,(concat "mailto:" "drew.adams" "@" "oracle" ".com?subject=\
-Bookmark+ bug: \
-&body=Describe bug here, starting with `emacs -Q'.  \
-Don't forget to mention your Emacs and library versions."))
+  :link `(url-link :tag "Send Bug Report" ,bmkp-mailto-bug-report-text)
   :link '(url-link :tag "Download" "https://www.emacswiki.org/emacs/download/bookmark%2b.el")
   :link '(url-link :tag "Description" "https://www.emacswiki.org/emacs/BookmarkPlus")
   :link '(emacs-commentary-link :tag "Commentary" "bookmark+"))
+
+;; This was added for vanilla Emacs 28.  Emacs 30 changed it from defconst to defvar.
+;; Add it here for older releases.
+(defvar bookmark-bmenu-buffer "*Bookmark List*"
+  "Name of buffer used by vanilla Emacs for the bookmark-list display.")
 
 ;; NOTE:
 ;; $$$$$$ Currently all vanilla Emacs functions that use constant `bookmark-bmenu-buffer' are
