@@ -1,9 +1,10 @@
 * bookmark-plus
 
-
 bookmarkPlus enhances vanilla Emacs bookmarks in many ways. 
 
 This is a git mirror of the files in emacsWiki.
+
+Latest update: Aug 9, 2026. bookmark-plus version 2026.08.08
 
 The main Bookmark+ library is =bookmark+.el=.  The other required
 libraries are =bookmark+-mac.el=, =bookmark+-bmu.el=,
